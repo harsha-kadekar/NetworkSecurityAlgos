@@ -113,3 +113,58 @@ int CeaserCipher_BruteForce(char* strCipheredText, int nSize)
 	fpOutputFile = 0;
 	return nReturnValue;
 }
+
+/*
+Name: AtbashCipher_CryptoAnalysis
+Description: This function will do a crypt analysis of Atbash cipher. This is try to get the plain text from the cipher text
+Parameter: strCipherText-> This is the encrypted text which needs to be broken
+		   nSize -> Size of the message which needs to be broken
+ReturnValue: 0 for success else Error code.
+*/
+int AtbashCipher_CryptAnalysis(char* strCipherText, int nSize)
+{
+	int nReturnValue = 0;
+	char* strPlainText = NULL;
+	FILE* fpOutput = NULL;
+
+	if (nSize < 0 || strCipherText == NULL)
+		return ERR_INVALIDINPUTPARAMETERS;
+
+	strPlainText = (char*)malloc(sizeof(char)*nSize);
+	if (strPlainText == NULL)
+	{
+		return ERR_MEMORYALLOCAIONFAILED;
+	}
+
+	for (int i = 0; i < nSize; i++)
+	{
+		if (strCipherText[i] >= 65 && strCipherText[i] <= 90)
+		{
+			strPlainText[i] = 90 - (strCipherText[i] - 65);
+		}
+		else if (strCipherText[i] >= 97 && strCipherText[i] <= 122)
+		{
+			strPlainText[i] = 122 - (strCipherText[i] - 97);
+		}
+	}
+	
+
+	fopen_s(&fpOutput, "AtbashCipher_PossiblePlainText.txt", "w");
+	if (fpOutput == NULL)
+	{
+		free(strPlainText);
+		strPlainText = NULL;
+		return ERR_FILEOPENERROR;
+	}
+
+	fprintf_s(fpOutput, "CIPHER TEXT:%s\n", strCipherText);
+	fprintf_s(fpOutput, "PLAIN TEXT:%s\n", strPlainText);
+
+	fclose(fpOutput);
+	fpOutput = NULL;
+
+	free(strPlainText);
+	strPlainText = NULL;
+
+	return nReturnValue;
+}

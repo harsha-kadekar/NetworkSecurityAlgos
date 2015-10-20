@@ -135,3 +135,72 @@ int MatrixMultiplication(int** pMatrixA, int Am, int An, int** pMatrixB, int Bm,
 	return nReturnValue;
 }
 
+
+/*
+Name: AtbashCipher
+Description: This function given a plain text gives the cipher text. For the conversion it uses atbash cipher
+Parameters: strPlainText- Text to be converted to cipher text
+			strCipherText - text got after applying the atbash ciper to plain text
+ReturnValue: 0 for success else Error codes.
+*/
+int AtbashCipher(char* strPlainText, int nSize, char* strCipherText)
+{
+	int nReturnValue = 0;
+
+	if (nSize <= 0 || strPlainText == NULL || strCipherText == NULL)
+	{
+		return ERR_INVALIDINPUTPARAMETERS;
+	}
+
+
+	for (int i = 0; i < nSize; i++)
+	{
+		//Idea here is replace A->Z, B->Y, C->X .....
+		if (strPlainText[i] >= 65 && strPlainText[i] <= 90)
+		{
+			//Capital Letters
+			strCipherText[i] = 90 - (strPlainText[i] - 65);
+		}
+		else if (strPlainText[i] >= 97 && strPlainText[i] <= 122)
+		{
+			//small Letters
+			strCipherText[i] = 122 - (strPlainText[i] - 97);
+		}
+	}
+
+	return nReturnValue;
+}
+
+/*
+Name: AtbashDecipher
+Description: This function given the cipher text gives the plain text by applying the Decipher engine of Atbashcipher.
+Parameters: strCipherText -> This is the cipher text which needs to be decipher
+			nSize -> Size of the cipher text
+			strPlainText -> this will have the plain text at the end of the function.
+ReturnValue: 0 for success else Error codes.
+*/
+int AtbashDecipher(char* strCipherText, int nSize, char* strPlainText)
+{
+	int nReturnValue = 0;
+
+	if (nSize <= 0 || strCipherText == NULL || strPlainText == NULL)
+	{
+		return ERR_INVALIDINPUTPARAMETERS;
+	}
+
+	for (int i = 0; i < nSize; i++)
+	{
+		if (strCipherText[i] >= 65 && strCipherText[i] <= 90)
+		{
+			//Capital Letters
+			strPlainText[i] = 90 - (strCipherText[i] - 65);
+		}
+		else if (strCipherText[i] >= 97 && strCipherText[i] <= 122)
+		{
+			//small Letters
+			strPlainText[i] = 122 - (strCipherText[i] - 97);
+		}
+	}
+
+	return nReturnValue;
+}
